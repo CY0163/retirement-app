@@ -572,13 +572,16 @@ input, textarea, select { font-family: inherit; }
   bottom: 3px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 9px;
+  font-size: 8px;
   color: #6E4856;
   font-weight: 600;
   white-space: nowrap;
-  background: rgba(255,255,255,0.7);
-  padding: 0 3px;
+  background: rgba(255,255,255,0.75);
+  padding: 0 2px;
   border-radius: 3px;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .finance-day-cell.has-amount { background: var(--m-pink-soft); }
 .finance-day-cell.today.has-amount { box-shadow: inset 0 0 0 2px var(--m-pink); }
@@ -1436,6 +1439,28 @@ input, textarea, select { font-family: inherit; }
             <button class="finance-add-btn" onclick="addExpense()">+</button>
           </div>
           <ul class="finance-list" id="finance-list"></ul>
+          <!-- 编辑弹窗 -->
+          <div class="batch-modal-overlay" id="finance-edit-modal" style="display:none;" onclick="if(event.target===this)closeFinanceEdit()">
+            <div class="batch-modal" onclick="event.stopPropagation()">
+              <h3 class="batch-modal-title">编辑支出</h3>
+              <div class="batch-field">
+                <label>金额</label>
+                <input type="number" id="edit-finance-amount" step="0.01" min="0" onkeydown="if(event.key==='Enter')saveFinanceEdit()">
+              </div>
+              <div class="batch-field">
+                <label>备注</label>
+                <input type="text" id="edit-finance-note" onkeydown="if(event.key==='Enter')saveFinanceEdit()">
+              </div>
+              <div class="batch-field">
+                <label>日期</label>
+                <input type="date" id="edit-finance-date">
+              </div>
+              <div class="batch-actions">
+                <button class="batch-btn-cancel" onclick="closeFinanceEdit()">取消</button>
+                <button class="batch-btn-confirm" onclick="saveFinanceEdit()">保存</button>
+              </div>
+            </div>
+          </div>
         </div>
         <!-- 月视图 -->
         <div id="finance-month-view" style="display:none;">
@@ -1955,12 +1980,14 @@ function renderFinance() {
     sorted.forEach((e) => {
       const li = document.createElement('li');
       li.className = 'finance-item';
+      li.style.cursor = 'pointer';
+      li.onclick = () => openFinanceEdit(e.id);
       const day = e.date.slice(-2);
       li.innerHTML = `
         <span class="finance-date-badge">${parseInt(day)}日</span>
         <span class="finance-note">${escapeHtml(e.note || '—')}</span>
         <span class="finance-amount">¥${Number(e.amount).toFixed(2)}</span>
-        <button class="finance-delete" onclick="deleteExpense('${mKey}', '${e.id}')">×</button>
+        <button class="finance-delete" onclick="event.stopPropagation();deleteExpense('${mKey}', '${e.id}')">×</button>
       `;
       list.appendChild(li);
     });
@@ -2007,7 +2034,7 @@ function renderFinanceMonth() {
     const dayData = byDay[dateStr];
     if (dayData) {
       cls += ' has-amount';
-      cell.innerHTML = `${d}<div class="cell-amount">¥${dayData.total.toFixed(0)}</div>`;
+      cell.innerHTML = `${d}<div class="cell-amount">¥${dayData.total.toFixed(2)}</div>`;
     } else {
       cell.textContent = d;
     }
@@ -2070,6 +2097,63 @@ function deleteExpense(mKey, id) {
   if (all[mKey]) all[mKey] = all[mKey].filter(e => e.id !== id);
   STORE.set('expenses', all);
   renderFinance();
+}
+// 编辑支出
+let editingExpenseId = null;
+function openFinanceEdit(id) {
+  // 找到这笔记录
+  const all = STORE.get('expenses', {});
+  let target = null, targetMKey = null;
+  for (const k in all) {
+    const found = all[k].find(e => e.id === id);
+    if (found) { target = found; targetMKey = k; break; }
+  }
+  if (!target) return;
+  editingExpenseId = id;
+  $('edit-finance-amount').value = target.amount;
+  $('edit-finance-note').value = target.note || '';
+  $('edit-finance-date').value = target.date;
+  $('finance-edit-modal').style.display = 'flex';
+  $('edit-finance-amount').focus();
+}
+function closeFinanceEdit() {
+  $('finance-edit-modal').style.display = 'none';
+  editingExpenseId = null;
+}
+function saveFinanceEdit() {
+  if (!editingExpenseId) return;
+  const amount = $('edit-finance-amount').value;
+  const note = $('edit-finance-note').value.trim();
+  const date = $('edit-finance-date').value;
+  if (!amount || Number(amount) <= 0) { toast('请输入有效金额'); return; }
+  if (!date) { toast('请选择日期'); return; }
+  const all = STORE.get('expenses', {});
+  // 找到原记录
+  let oldMKey = null, idx = -1;
+  for (const k in all) {
+    const i = all[k].findIndex(e => e.id === editingExpenseId);
+    if (i >= 0) { oldMKey = k; idx = i; break; }
+  }
+  if (oldMKey === null) { toast('记录不存在'); closeFinanceEdit(); return; }
+  // 新月份 key
+  const newMKey = monthStr(parseDate(date));
+  // 从旧月份移除
+  const moved = all[oldMKey].splice(idx, 1)[0];
+  if (all[oldMKey].length === 0) delete all[oldMKey];
+  // 更新字段
+  moved.amount = Number(amount);
+  moved.note = note;
+  moved.date = date;
+  moved.ts = Date.now();
+  // 放到新月份
+  if (!all[newMKey]) all[newMKey] = [];
+  all[newMKey].push(moved);
+  STORE.set('expenses', all);
+  closeFinanceEdit();
+  // 跳到新月份显示
+  financeMonth = parseDate(date);
+  renderFinance();
+  toast('已保存');
 }
 
 /* ============== 体重记录 ============== */
