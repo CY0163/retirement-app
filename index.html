@@ -270,8 +270,121 @@ input, textarea, select { font-family: inherit; }
   font-weight: 500;
 }
 .task-add-btn:active { transform: scale(0.96); }
+.task-batch-btn {
+  background: var(--m-blue-soft);
+  color: var(--m-blue);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0 14px;
+  font-size: 18px;
+}
+.task-batch-btn:active { transform: scale(0.96); background: var(--m-blue); color: white; }
 
-.task-list { list-style: none; padding: 0; margin: 0; }
+/* 批量添加弹窗 */
+.batch-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(80, 70, 60, 0.35);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+.batch-modal {
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
+}
+.batch-modal-title {
+  margin: 0 0 16px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.batch-field {
+  margin-bottom: 14px;
+}
+.batch-field label {
+  display: block;
+  font-size: 13px;
+  color: var(--color-text-light);
+  margin-bottom: 6px;
+}
+.batch-field input[type="text"],
+.batch-field input[type="date"] {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  outline: none;
+}
+.batch-field input[type="text"]:focus,
+.batch-field input[type="date"]:focus { border-color: var(--m-blue); }
+.batch-date-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.batch-date-range input { flex: 1; min-width: 0; }
+.batch-date-range span {
+  font-size: 13px;
+  color: var(--color-text-light);
+  flex-shrink: 0;
+}
+.batch-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+.batch-weekday {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 10px 0;
+  font-size: 13px;
+  color: var(--color-text-light);
+  transition: all 0.2s;
+}
+.batch-weekday.active {
+  background: var(--m-blue);
+  color: white;
+  border-color: var(--m-blue);
+  font-weight: 600;
+}
+.batch-preview {
+  font-size: 13px;
+  color: var(--color-text-light);
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.batch-actions {
+  display: flex;
+  gap: 10px;
+}
+.batch-actions button {
+  flex: 1;
+  padding: 12px 0;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+}
+.batch-btn-cancel { background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border); }
+.batch-btn-confirm { background: var(--m-blue); color: white; }
+.batch-btn-confirm:active { transform: scale(0.96); }
+
 .task-item {
   display: flex;
   align-items: center;
@@ -1054,8 +1167,45 @@ input, textarea, select { font-family: inherit; }
         <div class="task-input-row">
           <input type="text" class="task-input" id="task-input" placeholder="添加今天的任务..." onkeydown="if(event.key==='Enter')addTask()">
           <button class="task-add-btn" onclick="addTask()">+</button>
+          <button class="task-batch-btn" onclick="openBatchAdd()">🗓</button>
         </div>
         <ul class="task-list" id="task-list"></ul>
+      </div>
+
+      <!-- 批量添加弹窗 -->
+      <div class="batch-modal-overlay" id="batch-modal" style="display:none;" onclick="if(event.target===this)closeBatchAdd()">
+        <div class="batch-modal" onclick="event.stopPropagation()">
+          <h3 class="batch-modal-title">批量添加日程</h3>
+          <div class="batch-field">
+            <label>活动内容</label>
+            <input type="text" id="batch-task-input" placeholder="例如：晨跑 30 分钟" onkeydown="if(event.key==='Enter')submitBatchAdd()">
+          </div>
+          <div class="batch-field">
+            <label>重复日期范围</label>
+            <div class="batch-date-range">
+              <input type="date" id="batch-start-date">
+              <span>至</span>
+              <input type="date" id="batch-end-date">
+            </div>
+          </div>
+          <div class="batch-field">
+            <label>重复星期</label>
+            <div class="batch-weekdays" id="batch-weekdays">
+              <button class="batch-weekday" data-d="1" onclick="toggleBatchWeekday(1)">一</button>
+              <button class="batch-weekday" data-d="2" onclick="toggleBatchWeekday(2)">二</button>
+              <button class="batch-weekday" data-d="3" onclick="toggleBatchWeekday(3)">三</button>
+              <button class="batch-weekday" data-d="4" onclick="toggleBatchWeekday(4)">四</button>
+              <button class="batch-weekday" data-d="5" onclick="toggleBatchWeekday(5)">五</button>
+              <button class="batch-weekday" data-d="6" onclick="toggleBatchWeekday(6)">六</button>
+              <button class="batch-weekday" data-d="0" onclick="toggleBatchWeekday(0)">日</button>
+            </div>
+          </div>
+          <div class="batch-preview" id="batch-preview"></div>
+          <div class="batch-actions">
+            <button class="batch-btn-cancel" onclick="closeBatchAdd()">取消</button>
+            <button class="batch-btn-confirm" onclick="submitBatchAdd()">确认添加</button>
+          </div>
+        </div>
       </div>
 
       <!-- 周视图 -->
@@ -1415,6 +1565,82 @@ function addTask() {
   STORE.set('tasks_'+key, tasks);
   input.value = '';
   renderSchedule();
+}
+
+let selectedBatchWeekdays = new Set();
+function openBatchAdd() {
+  selectedBatchWeekdays = new Set();
+  document.querySelectorAll('.batch-weekday').forEach(b => b.classList.remove('active'));
+  $('batch-modal').style.display = 'flex';
+  // 默认范围：本周到未来 4 周
+  const start = new Date(scheduleDate);
+  const end = new Date(start);
+  end.setDate(end.getDate() + 28);
+  $('batch-start-date').value = fmtDate(start);
+  $('batch-end-date').value = fmtDate(end);
+  $('batch-task-input').value = '';
+  $('batch-task-input').focus();
+  updateBatchPreview();
+}
+function closeBatchAdd() {
+  $('batch-modal').style.display = 'none';
+}
+function toggleBatchWeekday(d) {
+  const btns = document.querySelectorAll('.batch-weekday');
+  const btn = [...btns].find(b => Number(b.dataset.d) === d);
+  if (selectedBatchWeekdays.has(d)) {
+    selectedBatchWeekdays.delete(d);
+    btn.classList.remove('active');
+  } else {
+    selectedBatchWeekdays.add(d);
+    btn.classList.add('active');
+  }
+  updateBatchPreview();
+}
+function updateBatchPreview() {
+  const text = $('batch-task-input').value.trim();
+  const start = $('batch-start-date').value;
+  const end = $('batch-end-date').value;
+  const days = selectedBatchWeekdays.size;
+  let count = 0;
+  if (start && end && days > 0) {
+    const s = parseDate(start);
+    const e = parseDate(end);
+    for (let d = new Date(s); d <= e; d.setDate(d.getDate()+1)) {
+      if (selectedBatchWeekdays.has(d.getDay())) count++;
+    }
+  }
+  $('batch-preview').textContent =
+    text ? `将为 ${count} 个日期添加「${text}」` : `将覆盖 ${count} 个日期`;
+}
+$('batch-task-input').addEventListener('input', updateBatchPreview);
+$('batch-start-date').addEventListener('change', updateBatchPreview);
+$('batch-end-date').addEventListener('change', updateBatchPreview);
+function submitBatchAdd() {
+  const text = $('batch-task-input').value.trim();
+  const start = $('batch-start-date').value;
+  const end = $('batch-end-date').value;
+  if (!text) { toast('请输入活动内容'); return; }
+  if (!start || !end) { toast('请选择日期范围'); return; }
+  if (selectedBatchWeekdays.size === 0) { toast('请至少选择一个星期'); return; }
+  const s = parseDate(start);
+  const e = parseDate(end);
+  if (s > e) { toast('开始日期不能晚于结束日期'); return; }
+  let added = 0;
+  for (let d = new Date(s); d <= e; d.setDate(d.getDate()+1)) {
+    if (selectedBatchWeekdays.has(d.getDay())) {
+      const key = fmtDate(d);
+      const tasks = STORE.get('tasks_'+key, []);
+      tasks.push({ text, done: false, ts: Date.now() });
+      STORE.set('tasks_'+key, tasks);
+      added++;
+    }
+  }
+  closeBatchAdd();
+  toast(`已添加 ${added} 个日程`);
+  renderSchedule();
+  if (scheduleView === 'week') renderScheduleWeek();
+  if (scheduleView === 'month') renderScheduleMonth();
 }
 function toggleTask(idx) {
   const key = fmtDate(scheduleDate);
