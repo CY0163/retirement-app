@@ -2,34 +2,35 @@
   "name": "退休计划",
   "short_name": "退休计划",
   "description": "记录退休生活的日程、打卡、收支与学术进度",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/retirement-app/index.html",
+  "scope": "/retirement-app/",
   "display": "standalone",
+  "display_override": ["standalone", "fullscreen", "minimal-ui"],
   "orientation": "portrait",
   "background_color": "#FCFAF7",
   "theme_color": "#FCFAF7",
   "lang": "zh-CN",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "/retirement-app/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icon-512.png",
+      "src": "/retirement-app/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icon-maskable-192.png",
+      "src": "/retirement-app/icon-maskable-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "icon-maskable-512.png",
+      "src": "/retirement-app/icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
