@@ -36,6 +36,8 @@
   --m-pink-soft: #EAD9DE;
   --m-purple: #9E8FA8;     /* 学术进度 - 莫兰迪紫灰 */
   --m-purple-soft: #D7CFD9;
+  --m-orange: #C9A982;     /* 体重记录 - 莫兰迪橙棕 */
+  --m-orange-soft: #EADFCB;
 
   /* 强调色 */
   --color-accent: #8FA68B;
@@ -616,6 +618,150 @@ input, textarea, select { font-family: inherit; }
   padding: 12px 0;
 }
 
+/* ============== 体重记录 ============== */
+.weight-month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  background: var(--m-orange-soft);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+}
+.weight-month-title {
+  font-weight: 600;
+  color: #6B5B3A;
+  font-size: 16px;
+}
+.weight-month-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--m-orange);
+  padding: 4px 10px;
+}
+.weight-chart-wrap {
+  position: relative;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: 12px 8px;
+  min-height: 200px;
+  margin-bottom: 14px;
+}
+#weight-chart {
+  width: 100%;
+  height: 200px;
+  display: block;
+}
+.weight-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-light);
+  font-size: 14px;
+  pointer-events: none;
+}
+.weight-stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.weight-stat {
+  flex: 1;
+  min-width: 70px;
+  background: var(--m-orange-soft);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  text-align: center;
+}
+.weight-stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #6B5B3A;
+}
+.weight-stat-label {
+  font-size: 11px;
+  color: var(--color-text-light);
+  margin-top: 2px;
+}
+.weight-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.weight-date-input {
+  flex: 0 0 auto;
+  padding: 12px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  outline: none;
+}
+.weight-date-input:focus { border-color: var(--m-orange); }
+.weight-value-input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  outline: none;
+}
+.weight-value-input:focus { border-color: var(--m-orange); }
+.weight-add-btn {
+  background: var(--m-orange);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0 18px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.weight-add-btn:active { transform: scale(0.96); }
+.weight-list { list-style: none; padding: 0; margin: 0; }
+.weight-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 4px;
+  border-bottom: 1px solid var(--color-divider);
+}
+.weight-item:last-child { border-bottom: none; }
+.weight-date-badge {
+  background: var(--m-orange-soft);
+  color: #6B5B3A;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.weight-value {
+  flex: 1;
+  font-weight: 600;
+  color: #6B5B3A;
+  font-size: 16px;
+}
+.weight-diff {
+  font-size: 12px;
+  color: var(--color-text-light);
+}
+.weight-diff.up { color: var(--color-danger); }
+.weight-diff.down { color: var(--color-accent); }
+.weight-delete {
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  font-size: 18px;
+  padding: 4px 8px;
+}
+
 /* ============== 排便记录 ============== */
 .bowel-month-nav {
   display: flex;
@@ -1041,21 +1187,23 @@ input, textarea, select { font-family: inherit; }
   flex: 1;
   background: none;
   border: none;
-  padding: 10px 4px 12px;
+  padding: 8px 2px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   color: var(--color-text-light);
-  font-size: 11px;
+  font-size: 10px;
+  min-width: 0;
+  overflow: hidden;
 }
 .bottom-nav-item .nav-icon {
-  width: 28px; height: 28px;
+  width: 26px; height: 26px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 16px;
   background: transparent;
   transition: all 0.2s;
 }
@@ -1118,6 +1266,10 @@ input, textarea, select { font-family: inherit; }
     <button class="nav-item" data-tab="finance" onclick="switchTab('finance')">
       <span class="nav-icon" style="background: var(--m-pink-soft);">💰</span>
       <span>收支记录</span>
+    </button>
+    <button class="nav-item" data-tab="weight" onclick="switchTab('weight')">
+      <span class="nav-icon" style="background: var(--m-orange-soft);">⚖️</span>
+      <span>体重记录</span>
     </button>
     <button class="nav-item" data-tab="academic" onclick="switchTab('academic')">
       <span class="nav-icon" style="background: var(--m-purple-soft);">📚</span>
@@ -1296,6 +1448,35 @@ input, textarea, select { font-family: inherit; }
       </div>
     </section>
 
+    <!-- ============= 体重记录模块 ============= -->
+    <section class="module" id="module-weight">
+      <div class="card">
+        <h3 class="module-title">
+          <span class="module-title-emoji" style="background: var(--m-orange-soft);">⚖️</span>
+          体重记录
+        </h3>
+        <div class="weight-month-nav">
+          <button class="weight-month-btn" onclick="changeWeightMonth(-1)">‹</button>
+          <span class="weight-month-title" id="weight-month-title"></span>
+          <button class="weight-month-btn" onclick="changeWeightMonth(1)">›</button>
+        </div>
+        <div class="weight-chart-wrap">
+          <svg id="weight-chart" viewBox="0 0 320 200" preserveAspectRatio="none"></svg>
+          <div class="weight-empty" id="weight-empty">本月还没有数据 🌱</div>
+        </div>
+        <div class="weight-stats" id="weight-stats"></div>
+      </div>
+
+      <div class="card">
+        <div class="weight-input-row">
+          <input type="date" class="weight-date-input" id="weight-date-input">
+          <input type="number" class="weight-value-input" id="weight-value-input" placeholder="体重 kg" step="0.1" min="20" max="300">
+          <button class="weight-add-btn" onclick="addWeight()">+</button>
+        </div>
+        <ul class="weight-list" id="weight-list"></ul>
+      </div>
+    </section>
+
     <!-- ============= 学术进度模块 ============= -->
     <section class="module" id="module-academic">
       <div class="academic-add-card">
@@ -1326,6 +1507,10 @@ input, textarea, select { font-family: inherit; }
   <button class="bottom-nav-item" data-tab="finance" onclick="switchTab('finance')">
     <span class="nav-icon">💰</span>
     <span>收支</span>
+  </button>
+  <button class="bottom-nav-item" data-tab="weight" onclick="switchTab('weight')">
+    <span class="nav-icon">⚖️</span>
+    <span>体重</span>
   </button>
   <button class="bottom-nav-item" data-tab="academic" onclick="switchTab('academic')">
     <span class="nav-icon">📚</span>
@@ -1393,10 +1578,11 @@ function switchTab(tab) {
   document.querySelectorAll('.bottom-nav-item').forEach(n => {
     n.classList.toggle('active', n.dataset.tab === tab);
   });
-  const titles = { schedule: '📋 工作日程', bowel: '🚽 排便记录', finance: '💰 收支记录', academic: '📚 学术进度' };
+  const titles = { schedule: '📋 工作日程', bowel: '🚽 排便记录', finance: '💰 收支记录', weight: '⚖️ 体重记录', academic: '📚 学术进度' };
   $('page-title').textContent = titles[tab];
   if (tab === 'bowel') renderBowel();
   if (tab === 'finance') renderFinance();
+  if (tab === 'weight') renderWeight();
   if (tab === 'academic') renderAcademic();
 }
 
@@ -1886,6 +2072,173 @@ function deleteExpense(mKey, id) {
   renderFinance();
 }
 
+/* ============== 体重记录 ============== */
+let weightMonth = new Date();
+function changeWeightMonth(delta) {
+  weightMonth.setMonth(weightMonth.getMonth() + delta);
+  renderWeight();
+}
+function renderWeight() {
+  const year = weightMonth.getFullYear();
+  const month = weightMonth.getMonth();
+  $('weight-month-title').textContent = `${year}年${month+1}月`;
+  const allW = STORE.get('weights', {});
+  // 收集当月记录，按日期排序
+  const monthPrefix = `${year}-${String(month+1).padStart(2,'0')}`;
+  const items = Object.entries(allW)
+    .filter(([d]) => d.startsWith(monthPrefix))
+    .map(([d, v]) => ({ date: d, value: v }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+  // 渲染折线图
+  renderWeightChart(items);
+  // 渲染列表
+  renderWeightList(items);
+  // 渲染统计
+  renderWeightStats(items);
+}
+function renderWeightChart(items) {
+  const svg = $('weight-chart');
+  const empty = $('weight-empty');
+  if (!items.length) {
+    svg.innerHTML = '';
+    empty.style.display = 'flex';
+    return;
+  }
+  empty.style.display = 'none';
+  const W = 320, H = 200;
+  const padL = 38, padR = 14, padT = 18, padB = 28;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+  // 数值范围
+  const values = items.map(i => i.value);
+  let vmin = Math.min(...values);
+  let vmax = Math.max(...values);
+  const range = vmax - vmin || 1;
+  // 给 y 轴留一点空间
+  vmin = vmin - range * 0.15;
+  vmax = vmax + range * 0.15;
+  // x 轴按日期索引均匀分布
+  const n = items.length;
+  const xOf = (i) => n === 1 ? padL + innerW / 2 : padL + (innerW * i) / (n - 1);
+  const yOf = (v) => padT + innerH * (1 - (v - vmin) / (vmax - vmin));
+  let svgStr = '';
+  // 网格线 + y 轴标签（4 条）
+  for (let i = 0; i <= 4; i++) {
+    const y = padT + (innerH * i) / 4;
+    const v = vmax - (vmax - vmin) * (i / 4);
+    svgStr += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#ECEAE5" stroke-width="1" stroke-dasharray="3,3"/>`;
+    svgStr += `<text x="${padL - 6}" y="${y + 3}" font-size="9" fill="#8A8A86" text-anchor="end">${v.toFixed(1)}</text>`;
+  }
+  // x 轴标签（首尾 + 中间）
+  const labelIdx = new Set();
+  labelIdx.add(0);
+  labelIdx.add(n - 1);
+  if (n >= 4) labelIdx.add(Math.floor((n - 1) / 2));
+  labelIdx.forEach(i => {
+    const x = xOf(i);
+    const d = items[i].date.slice(8);  // 取日
+    svgStr += `<text x="${x}" y="${H - 8}" font-size="9" fill="#8A8A86" text-anchor="middle">${parseInt(d)}日</text>`;
+  });
+  // 折线（直线点状）
+  let points = items.map((it, i) => `${xOf(i)},${yOf(it.value)}`).join(' ');
+  svgStr += `<polyline points="${points}" fill="none" stroke="#C9A982" stroke-width="2" stroke-linejoin="round"/>`;
+  // 点 + 数值标签
+  items.forEach((it, i) => {
+    const x = xOf(i);
+    const y = yOf(it.value);
+    svgStr += `<circle cx="${x}" cy="${y}" r="3" fill="#C9A982" stroke="white" stroke-width="1.5"/>`;
+    // 只在间隔够大时显示数值，避免重叠
+    if (n <= 8 || labelIdx.has(i)) {
+      svgStr += `<text x="${x}" y="${y - 8}" font-size="9" fill="#6B5B3A" text-anchor="middle">${it.value}</text>`;
+    }
+  });
+  svg.innerHTML = svgStr;
+}
+function renderWeightList(items) {
+  const list = $('weight-list');
+  list.innerHTML = '';
+  if (!items.length) {
+    list.innerHTML = '<div class="empty-hint">还没有体重记录 ⚖️</div>';
+    return;
+  }
+  const reversed = items.slice().reverse();  // 倒序显示（最新在上）
+  reversed.forEach((it, i) => {
+    // 与上一条对比（原顺序的下一条）
+    const origIdx = items.length - 1 - i;
+    const prev = items[origIdx - 1];
+    let diffHtml = '';
+    if (prev) {
+      const diff = it.value - prev.value;
+      if (diff > 0) diffHtml = `<span class="weight-diff up">↑${diff.toFixed(1)}</span>`;
+      else if (diff < 0) diffHtml = `<span class="weight-diff down">↓${Math.abs(diff).toFixed(1)}</span>`;
+      else diffHtml = `<span class="weight-diff">—</span>`;
+    }
+    const li = document.createElement('li');
+    li.className = 'weight-item';
+    const d = parseDate(it.date);
+    li.innerHTML = `
+      <span class="weight-date-badge">${d.getMonth()+1}月${d.getDate()}日</span>
+      <span class="weight-value">${it.value} kg</span>
+      ${diffHtml}
+      <button class="weight-delete" onclick="deleteWeight('${it.date}')">×</button>
+    `;
+    list.appendChild(li);
+  });
+}
+function renderWeightStats(items) {
+  const stats = $('weight-stats');
+  if (!items.length) {
+    stats.innerHTML = '';
+    return;
+  }
+  const values = items.map(i => i.value);
+  const first = items[0].value;
+  const last = items[items.length - 1].value;
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const avg = (values.reduce((s, v) => s + v, 0) / values.length).toFixed(1);
+  const diff = (last - first).toFixed(1);
+  const diffSign = diff > 0 ? '+' : '';
+  const diffClass = diff > 0 ? 'up' : (diff < 0 ? 'down' : '');
+  stats.innerHTML = `
+    <div class="weight-stat">
+      <div class="weight-stat-value">${last}</div>
+      <div class="weight-stat-label">最新 kg</div>
+    </div>
+    <div class="weight-stat">
+      <div class="weight-stat-value">${min}~${max}</div>
+      <div class="weight-stat-label">范围</div>
+    </div>
+    <div class="weight-stat">
+      <div class="weight-stat-value">${avg}</div>
+      <div class="weight-stat-label">平均</div>
+    </div>
+    <div class="weight-stat">
+      <div class="weight-stat-value">${diffSign}${diff}</div>
+      <div class="weight-stat-label">月变化</div>
+    </div>
+  `;
+}
+function addWeight() {
+  const date = $('weight-date-input').value;
+  const value = $('weight-value-input').value;
+  if (!date) { toast('请选择日期'); return; }
+  if (!value || Number(value) <= 0) { toast('请输入有效体重'); return; }
+  const all = STORE.get('weights', {});
+  all[date] = Number(value);
+  STORE.set('weights', all);
+  $('weight-value-input').value = '';
+  // 跳转到数据所在月份
+  weightMonth = parseDate(date);
+  renderWeight();
+}
+function deleteWeight(date) {
+  const all = STORE.get('weights', {});
+  delete all[date];
+  STORE.set('weights', all);
+  renderWeight();
+}
+
 /* ============== 学术进度 ============== */
 function renderAcademic() {
   const papers = STORE.get('papers', []);
@@ -2063,7 +2416,10 @@ function init() {
   renderSchedule();
   renderBowel();
   renderFinance();
+  renderWeight();
   renderAcademic();
+  // 体重默认日期为今天
+  $('weight-date-input').value = todayStr();
   updateBellBadge();
   checkNotificationPermission();
   // 立即检查一次（避免刚打开错过当日提醒）
