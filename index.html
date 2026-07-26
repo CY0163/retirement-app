@@ -38,6 +38,8 @@
   --m-purple-soft: #D7CFD9;
   --m-orange: #C9A982;     /* 体重记录 - 莫兰迪橙棕 */
   --m-orange-soft: #EADFCB;
+  --m-teal: #8FAAB3;       /* 科研板块 - 莫兰迪蓝绿 */
+  --m-teal-soft: #D4E0E3;
 
   /* 强调色 */
   --color-accent: #8FA68B;
@@ -187,6 +189,99 @@ input, textarea, select { font-family: inherit; }
   border-radius: 50%;
   border: 2px solid var(--color-card);
 }
+.topbar-actions { display: flex; gap: 8px; align-items: center; }
+
+/* 管理面板按钮 */
+.nav-item.manage-btn { margin-top: auto; border-top: 1px solid var(--color-divider); border-radius: 0; padding-top: 16px; }
+
+/* ============== 科研板块 ============== */
+.research-keywords { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.research-kw-btn {
+  padding: 6px 14px; border-radius: 20px; border: 1px solid var(--color-border);
+  background: var(--color-card); color: var(--color-text-light); font-size: 13px; transition: all 0.2s;
+}
+.research-kw-btn.active { background: var(--m-teal-soft); color: var(--color-text); border-color: var(--m-teal); font-weight: 500; }
+.research-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.research-refresh-btn {
+  padding: 8px 16px; border-radius: 20px; border: none; background: var(--m-teal); color: #fff; font-size: 13px;
+}
+.research-refresh-btn:active { transform: scale(0.96); }
+.research-refresh-btn:disabled { opacity: 0.5; }
+.research-list { display: flex; flex-direction: column; gap: 12px; }
+.research-card {
+  background: var(--color-card); border-radius: var(--radius-md); padding: 16px;
+  box-shadow: var(--shadow-soft); border-left: 3px solid var(--m-teal);
+}
+.research-card-title {
+  font-size: 15px; font-weight: 600; color: var(--color-text); margin: 0 0 6px; line-height: 1.4;
+  text-decoration: none; display: block;
+}
+.research-card-title:active { opacity: 0.7; }
+.research-card-meta { font-size: 12px; color: var(--color-text-light); margin: 0 0 8px; }
+.research-card-meta .journal { color: var(--m-teal); font-weight: 500; }
+.research-card-abstract { font-size: 13px; color: var(--color-text); line-height: 1.6; }
+.research-card-abstract .abs-label {
+  display: inline-block; font-size: 11px; font-weight: 600; color: var(--m-teal);
+  background: var(--m-teal-soft); padding: 1px 6px; border-radius: 4px; margin-right: 6px;
+}
+.research-card-abstract p { margin: 4px 0; }
+.research-empty { text-align: center; padding: 40px 20px; color: var(--color-text-light); font-size: 14px; }
+.research-loading { text-align: center; padding: 40px 20px; color: var(--color-text-light); }
+.research-loading::after { content: '...'; animation: dots 1.4s steps(4) infinite; }
+@keyframes dots { 0%,33%{content:'.';} 66%{content:'..';} 100%{content:'...';} }
+
+/* ============== 自定义面板 ============== */
+.custom-panel-area textarea {
+  width: 100%; min-height: 200px; border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  padding: 12px; font-size: 14px; font-family: inherit; resize: vertical; background: var(--color-card);
+}
+.custom-panel-area textarea:focus { outline: none; border-color: var(--color-accent); }
+
+/* ============== 模态框通用 ============== */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(60,50,40,0.4); z-index: 1000;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-box {
+  background: var(--color-card); border-radius: var(--radius-lg); padding: 20px;
+  max-width: 460px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow-card);
+}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.modal-header h3 { margin: 0; font-size: 18px; }
+.modal-close {
+  width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--color-divider);
+  font-size: 20px; color: var(--color-text-light);
+}
+.panel-editor-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.panel-editor-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  background: var(--color-divider); border-radius: var(--radius-md);
+}
+.panel-editor-item.dragging { opacity: 0.5; }
+.panel-editor-item .drag-handle { cursor: grab; color: var(--color-text-light); font-size: 18px; }
+.panel-editor-item .pe-icon {
+  width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.panel-editor-item .pe-name { flex: 1; font-size: 14px; }
+.panel-editor-item .pe-actions { display: flex; gap: 6px; }
+.panel-editor-item .pe-actions button {
+  width: 32px; height: 32px; border-radius: 8px; border: none; background: var(--color-card); font-size: 14px;
+}
+.panel-add-form { display: flex; flex-direction: column; gap: 8px; }
+.panel-add-form input, .panel-add-form select {
+  padding: 10px; border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+  font-size: 14px; background: var(--color-card);
+}
+.panel-add-btn {
+  padding: 10px; border: none; border-radius: var(--radius-sm); background: var(--color-accent); color: #fff; font-size: 14px;
+}
+.backup-actions { display: flex; flex-direction: column; gap: 10px; }
+.backup-btn {
+  display: block; text-align: center; padding: 14px; border-radius: var(--radius-md); border: none;
+  font-size: 15px; cursor: pointer;
+}
+.backup-btn.export { background: var(--color-accent); color: #fff; }
+.backup-btn.import { background: var(--m-teal-soft); color: var(--color-text); }
 
 /* ============== 模块 ============== */
 .module { display: none; animation: fadeIn 0.3s ease; }
@@ -1262,25 +1357,10 @@ input, textarea, select { font-family: inherit; }
       <div class="logo">🍵</div>
       退休计划
     </div>
-    <button class="nav-item active" data-tab="schedule" onclick="switchTab('schedule')">
-      <span class="nav-icon" style="background: var(--m-blue-soft);">📋</span>
-      <span>工作日程</span>
-    </button>
-    <button class="nav-item" data-tab="finance" onclick="switchTab('finance')">
-      <span class="nav-icon" style="background: var(--m-pink-soft);">💰</span>
-      <span>收支记录</span>
-    </button>
-    <button class="nav-item" data-tab="weight" onclick="switchTab('weight')">
-      <span class="nav-icon" style="background: var(--m-orange-soft);">⚖️</span>
-      <span>体重记录</span>
-    </button>
-    <button class="nav-item" data-tab="academic" onclick="switchTab('academic')">
-      <span class="nav-icon" style="background: var(--m-purple-soft);">📚</span>
-      <span>学术进度</span>
-    </button>
-    <button class="nav-item" data-tab="bowel" onclick="switchTab('bowel')">
-      <span class="nav-icon" style="background: var(--m-green-soft);">🚽</span>
-      <span>排便记录</span>
+    <div id="nav-list"></div>
+    <button class="nav-item manage-btn" onclick="openPanelEditor()">
+      <span class="nav-icon" style="background: var(--color-divider);">⚙️</span>
+      <span>管理面板</span>
     </button>
   </aside>
 
@@ -1289,10 +1369,13 @@ input, textarea, select { font-family: inherit; }
     <!-- 顶栏 -->
     <div class="topbar">
       <h1 class="page-title" id="page-title">📋 工作日程</h1>
-      <button class="bell" onclick="toggleNotifications()" aria-label="通知">
-        🔔
-        <span class="bell-badge" id="bell-badge" style="display:none;"></span>
-      </button>
+      <div class="topbar-actions">
+        <button class="bell" onclick="openBackupModal()" aria-label="备份" title="备份/迁移数据">💾</button>
+        <button class="bell" onclick="toggleNotifications()" aria-label="通知">
+          🔔
+          <span class="bell-badge" id="bell-badge" style="display:none;"></span>
+        </button>
+      </div>
     </div>
 
     <!-- 通知权限提示 -->
@@ -1520,32 +1603,38 @@ input, textarea, select { font-family: inherit; }
       <ul class="academic-list" id="academic-list"></ul>
     </section>
 
+    <!-- 科研板块 -->
+    <section class="module" id="module-research">
+      <h3 class="module-title">
+        <span class="module-title-emoji" style="background: var(--m-teal-soft);">🔬</span>
+        科研文献
+      </h3>
+      <p style="font-size:12px;color:var(--color-text-light);margin:0 0 12px;">
+        自动检索 PubMed 妇科学/中医妇科学高质量文献，点击标题跳转原文
+      </p>
+
+      <div class="research-keywords">
+        <button class="research-kw-btn active" onclick="setResearchKw('tcm')">中医妇科</button>
+        <button class="research-kw-btn" onclick="setResearchKw('gyn')">妇科学</button>
+        <button class="research-kw-btn" onclick="setResearchKw('integrated')">中西医结合</button>
+      </div>
+
+      <div class="research-toolbar">
+        <span id="research-updated" style="font-size:12px;color:var(--color-text-light);"></span>
+        <button class="research-refresh-btn" onclick="refreshResearch()">
+          🔄 刷新
+        </button>
+      </div>
+
+      <div id="research-hint" style="display:none;"></div>
+      <div class="research-list" id="research-list"></div>
+    </section>
+
   </main>
 </div>
 
-<!-- 底部 Tab（移动端） -->
-<nav class="bottom-nav">
-  <button class="bottom-nav-item active" data-tab="schedule" onclick="switchTab('schedule')">
-    <span class="nav-icon">📋</span>
-    <span>日程</span>
-  </button>
-  <button class="bottom-nav-item" data-tab="finance" onclick="switchTab('finance')">
-    <span class="nav-icon">💰</span>
-    <span>收支</span>
-  </button>
-  <button class="bottom-nav-item" data-tab="weight" onclick="switchTab('weight')">
-    <span class="nav-icon">⚖️</span>
-    <span>体重</span>
-  </button>
-  <button class="bottom-nav-item" data-tab="academic" onclick="switchTab('academic')">
-    <span class="nav-icon">📚</span>
-    <span>学术</span>
-  </button>
-  <button class="bottom-nav-item" data-tab="bowel" onclick="switchTab('bowel')">
-    <span class="nav-icon">🚽</span>
-    <span>排便</span>
-  </button>
-</nav>
+<!-- 底部 Tab（移动端）- 动态渲染 -->
+<nav class="bottom-nav" id="bottom-nav"></nav>
 
 <!-- 通知抽屉 -->
 <div class="notification-panel" id="notification-panel">
@@ -1558,6 +1647,60 @@ input, textarea, select { font-family: inherit; }
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- 面板编辑模式 -->
+<div class="modal-overlay" id="panel-editor-overlay" style="display:none;">
+  <div class="modal-box panel-editor-box">
+    <div class="modal-header">
+      <h3>⚙️ 管理面板</h3>
+      <button class="modal-close" onclick="closePanelEditor()">×</button>
+    </div>
+    <p style="font-size:12px;color:var(--color-text-light);margin:0 0 12px;">
+      拖拽 ⇕ 排序 · 点击 👁 显隐 · 内置面板不可删除
+    </p>
+    <ul class="panel-editor-list" id="panel-editor-list"></ul>
+    <div class="panel-add">
+      <h4 style="margin:16px 0 8px;">添加自定义面板</h4>
+      <div class="panel-add-form">
+        <input type="text" id="new-panel-name" placeholder="面板名称" maxlength="12">
+        <input type="text" id="new-panel-emoji" placeholder="图标(emoji)" maxlength="4" value="📝">
+        <select id="new-panel-color">
+          <option value="blue">莫兰迪蓝</option>
+          <option value="green">莫兰迪绿</option>
+          <option value="pink">莫兰迪粉</option>
+          <option value="purple">莫兰迪紫</option>
+          <option value="orange">莫兰迪橙</option>
+          <option value="teal" selected>莫兰迪蓝绿</option>
+        </select>
+        <button class="panel-add-btn" onclick="addCustomPanel()">添加</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 自定义面板容器挂载点 -->
+<div id="custom-panels-mount"></div>
+
+<!-- 备份/导入弹窗 -->
+<div class="modal-overlay" id="backup-overlay" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>💾 数据备份与迁移</h3>
+      <button class="modal-close" onclick="closeBackupModal()">×</button>
+    </div>
+    <p style="font-size:13px;color:var(--color-text-light);margin:0 0 16px;line-height:1.6;">
+      导出所有数据为 JSON 文件，换手机时可导入恢复。<br>
+      建议定期导出保存到安全位置。
+    </p>
+    <div class="backup-actions">
+      <button class="backup-btn export" onclick="exportData()">📤 导出数据</button>
+      <label class="backup-btn import">
+        📥 导入数据
+        <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importData(event)">
+      </label>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ============== 工具 ============== */
@@ -1591,24 +1734,393 @@ function toast(msg) {
   t._timer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
+/* ============== 面板配置（可定制侧边栏） ============== */
+const PANEL_COLORS = {
+  blue:   { main: '--m-blue',   soft: '--m-blue-soft'   },
+  green:  { main: '--m-green',  soft: '--m-green-soft'  },
+  pink:   { main: '--m-pink',   soft: '--m-pink-soft'   },
+  purple: { main: '--m-purple', soft: '--m-purple-soft' },
+  orange: { main: '--m-orange', soft: '--m-orange-soft' },
+  teal:   { main: '--m-teal',   soft: '--m-teal-soft'   },
+};
+const DEFAULT_PANELS = [
+  { id: 'schedule', name: '工作日程', icon: '📋', color: 'blue',   type: 'builtin', enabled: true,  order: 0 },
+  { id: 'finance',  name: '收支记录', icon: '💰', color: 'pink',   type: 'builtin', enabled: true,  order: 1 },
+  { id: 'weight',   name: '体重记录', icon: '⚖️', color: 'orange', type: 'builtin', enabled: true,  order: 2 },
+  { id: 'academic', name: '学术进度', icon: '📚', color: 'purple', type: 'builtin', enabled: true,  order: 3 },
+  { id: 'research', name: '科研文献', icon: '🔬', color: 'teal',   type: 'builtin', enabled: true,  order: 4 },
+  { id: 'bowel',    name: '排便记录', icon: '🚽', color: 'green',  type: 'builtin', enabled: true,  order: 5 },
+];
+function getPanels() {
+  const p = STORE.get('panels', null);
+  if (!p) { STORE.set('panels', DEFAULT_PANELS); return DEFAULT_PANELS; }
+  // 合并：补齐新增的内置面板（如科研）
+  const ids = p.map(x => x.id);
+  DEFAULT_PANELS.forEach(d => { if (!ids.includes(d.id)) p.push({...d}); });
+  return p.sort((a,b) => a.order - b.order);
+}
+function savePanels(arr) { STORE.set('panels', arr); }
+function panelColorVar(p, soft) {
+  const c = PANEL_COLORS[p.color] || PANEL_COLORS.teal;
+  return `var(${soft ? c.soft : c.main})`;
+}
+
+/* 渲染侧边栏 + 底部导航 */
+function renderNav() {
+  const panels = getPanels().filter(p => p.enabled);
+  const navList = $('nav-list');
+  if (navList) {
+    navList.innerHTML = panels.map(p => `
+      <button class="nav-item ${p.id===currentTab?'active':''}" data-tab="${p.id}" onclick="switchTab('${p.id}')">
+        <span class="nav-icon" style="background: ${panelColorVar(p,true)};">${p.icon}</span>
+        <span>${p.name}</span>
+      </button>`).join('');
+  }
+  const bn = $('bottom-nav');
+  if (bn) {
+    bn.innerHTML = panels.map(p => `
+      <button class="bottom-nav-item ${p.id===currentTab?'active':''}" data-tab="${p.id}" onclick="switchTab('${p.id}')">
+        <span class="nav-icon">${p.icon}</span>
+        <span>${p.name.length>2?p.name.slice(0,2):p.name}</span>
+      </button>`).join('');
+  }
+  renderCustomContainers();
+}
+
+/* 动态生成自定义面板的 section 容器 */
+function renderCustomContainers() {
+  const mount = $('custom-panels-mount');
+  if (!mount) return;
+  const customs = getPanels().filter(p => p.type === 'custom' && p.enabled);
+  customs.forEach(p => {
+    if (!$('module-'+p.id)) {
+      const sec = document.createElement('section');
+      sec.className = 'module custom-panel-area';
+      sec.id = 'module-'+p.id;
+      sec.innerHTML = `
+        <h3 class="module-title">
+          <span class="module-title-emoji" style="background: ${panelColorVar(p,true)};">${p.icon}</span>
+          ${p.name}
+        </h3>
+        <textarea id="custom-text-${p.id}" placeholder="在这里记录任意内容，自动保存..." oninput="saveCustomText('${p.id}', this.value)"></textarea>`;
+      mount.appendChild(sec);
+    }
+  });
+}
+
+function saveCustomText(id, v) { STORE.set('custom_'+id, v); }
+function loadCustomText(id) { return STORE.get('custom_'+id, ''); }
+
 /* ============== Tab 切换 ============== */
 let currentTab = 'schedule';
 function switchTab(tab) {
   currentTab = tab;
   document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
-  $('module-'+tab).classList.add('active');
+  const mod = $('module-'+tab);
+  if (mod) mod.classList.add('active');
   document.querySelectorAll('.sidebar .nav-item').forEach(n => {
     n.classList.toggle('active', n.dataset.tab === tab);
   });
   document.querySelectorAll('.bottom-nav-item').forEach(n => {
     n.classList.toggle('active', n.dataset.tab === tab);
   });
-  const titles = { schedule: '📋 工作日程', bowel: '🚽 排便记录', finance: '💰 收支记录', weight: '⚖️ 体重记录', academic: '📚 学术进度' };
-  $('page-title').textContent = titles[tab];
-  if (tab === 'bowel') renderBowel();
-  if (tab === 'finance') renderFinance();
-  if (tab === 'weight') renderWeight();
-  if (tab === 'academic') renderAcademic();
+  const panel = getPanels().find(p => p.id === tab);
+  if (panel) $('page-title').textContent = `${panel.icon} ${panel.name}`;
+  // 渲染分发
+  const renderers = {
+    schedule: renderSchedule, bowel: renderBowel, finance: renderFinance,
+    weight: renderWeight, academic: renderAcademic, research: renderResearch,
+  };
+  if (renderers[tab]) renderers[tab]();
+  if (panel && panel.type === 'custom') {
+    const ta = $('custom-text-'+tab);
+    if (ta) ta.value = loadCustomText(tab);
+  }
+}
+
+/* ============== 面板编辑模式 ============== */
+function openPanelEditor() {
+  $('panel-editor-overlay').style.display = 'flex';
+  renderPanelEditorList();
+}
+function closePanelEditor() {
+  $('panel-editor-overlay').style.display = 'none';
+  renderNav();
+}
+function renderPanelEditorList() {
+  const panels = getPanels();
+  $('panel-editor-list').innerHTML = panels.map((p, i) => `
+    <li class="panel-editor-item" draggable="true" data-idx="${i}" data-id="${p.id}">
+      <span class="drag-handle">⇕</span>
+      <span class="pe-icon" style="background: ${panelColorVar(p,true)};">${p.icon}</span>
+      <span class="pe-name">${p.name}${p.type==='custom'?' <small style="color:var(--color-text-light);">(自定义)</small>':''}</span>
+      <div class="pe-actions">
+        <button onclick="togglePanelEnabled('${p.id}')" title="显示/隐藏">${p.enabled?'👁':'🚫'}</button>
+        ${p.type==='custom' ? `<button onclick="deleteCustomPanel('${p.id}')" title="删除">🗑</button>` : ''}
+      </div>
+    </li>`).join('');
+  // 拖拽排序
+  let dragIdx = null;
+  const items = document.querySelectorAll('.panel-editor-item');
+  items.forEach(item => {
+    item.addEventListener('dragstart', e => { dragIdx = +item.dataset.idx; item.classList.add('dragging'); });
+    item.addEventListener('dragend', () => item.classList.remove('dragging'));
+    item.addEventListener('dragover', e => e.preventDefault());
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      const dropIdx = +item.dataset.idx;
+      if (dragIdx === null || dragIdx === dropIdx) return;
+      const arr = getPanels();
+      const [moved] = arr.splice(dragIdx, 1);
+      arr.splice(dropIdx, 0, moved);
+      arr.forEach((p, i) => p.order = i);
+      savePanels(arr);
+      renderPanelEditorList();
+    });
+  });
+}
+function togglePanelEnabled(id) {
+  const arr = getPanels();
+  const p = arr.find(x => x.id === id);
+  if (p) { p.enabled = !p.enabled; savePanels(arr); renderPanelEditorList(); }
+}
+function deleteCustomPanel(id) {
+  if (!confirm('确定删除该自定义面板？数据将一并清除。')) return;
+  let arr = getPanels().filter(p => p.id !== id);
+  arr.forEach((p, i) => p.order = i);
+  savePanels(arr);
+  localStorage.removeItem('rp_custom_'+id);
+  // 移除DOM
+  const sec = $('module-'+id);
+  if (sec) sec.remove();
+  if (currentTab === id) switchTab('schedule');
+  renderPanelEditorList();
+}
+function addCustomPanel() {
+  const name = $('new-panel-name').value.trim();
+  const icon = $('new-panel-emoji').value.trim() || '📝';
+  const color = $('new-panel-color').value;
+  if (!name) { toast('请输入面板名称'); return; }
+  const id = 'custom_' + Date.now();
+  const arr = getPanels();
+  arr.push({ id, name, icon, color, type: 'custom', enabled: true, order: arr.length });
+  savePanels(arr);
+  $('new-panel-name').value = '';
+  renderPanelEditorList();
+  toast('已添加「'+name+'」');
+}
+
+/* ============== 科研板块（PubMed） ============== */
+const RESEARCH_KW = {
+  tcm:        '("gynecology"[MeSH] OR "gynaecology"[Title/Abstract]) AND ("traditional Chinese medicine"[Title/Abstract] OR "TCM"[Title/Abstract] OR "Chinese herbal"[Title/Abstract])',
+  gyn:        '("gynecology"[MeSH] OR "gynaecology"[Title/Abstract]) AND (review[pt] AND (last 1 year[dp]))',
+  integrated: '("gynecology"[MeSH] OR "gynaecology"[Title/Abstract]) AND ("integrative medicine"[Title/Abstract] OR "complementary medicine"[Title/Abstract] OR "acupuncture"[Title/Abstract])',
+};
+let researchKw = 'tcm';
+
+function setResearchKw(k) {
+  researchKw = k;
+  document.querySelectorAll('.research-kw-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  // 切换关键词时强制刷新（即使有缓存）
+  const cache = STORE.get('research_cache', null);
+  if (!cache || cache.keyword !== k) renderResearch(true);
+  else renderResearch();
+}
+
+async function fetchPubMed(keyword) {
+  const term = RESEARCH_KW[keyword] || RESEARCH_KW.tcm;
+  const esearchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(term)}&retmax=10&sort=date&retmode=json`;
+  const r1 = await fetch(esearchUrl);
+  if (!r1.ok) throw new Error('PubMed 检索失败');
+  const d1 = await r1.json();
+  const ids = d1.esearchresult.idlist || [];
+  if (ids.length === 0) return [];
+  // esummary + efetch 并行
+  const idStr = ids.join(',');
+  const [r2, r3] = await Promise.all([
+    fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${idStr}&retmode=json`),
+    fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${idStr}&retmode=xml&rettype=abstract`),
+  ]);
+  const d2 = await r2.json();
+  const xmlText = await r3.text();
+  // 解析 XML 摘要
+  const doc = new DOMParser().parseFromString(xmlText, 'text/xml');
+  const abstractMap = {};
+  doc.querySelectorAll('PubmedArticle').forEach(art => {
+    const pmid = art.querySelector('PMID')?.textContent;
+    const absEl = art.querySelector('Abstract');
+    if (pmid && absEl) {
+      const parts = [];
+      absEl.querySelectorAll('AbstractText').forEach(t => {
+        const label = t.getAttribute('Label');
+        parts.push(label ? `${label}: ${t.textContent}` : t.textContent);
+      });
+      abstractMap[pmid] = parts.join('\n\n');
+    }
+  });
+  return ids.map(id => {
+    const a = d2.result[id];
+    if (!a) return null;
+    return {
+      pmid: id,
+      title: a.title || '无标题',
+      journal: a.source || '',
+      pubdate: a.pubdate || '',
+      authors: (a.authors || []).slice(0, 3).map(x => x.name).join(', ') + (a.authors?.length > 3 ? ' 等' : ''),
+      abstract: abstractMap[id] || '',
+      url: `https://pubmed.ncbi.nlm.nih.gov/${id}/`,
+    };
+  }).filter(Boolean);
+}
+
+function parseAbstractSections(abs) {
+  if (!abs) return [{ label: '摘要', text: '暂无摘要' }];
+  // 尝试匹配 BACKGROUND/METHODS/RESULTS/CONCLUSION 等标签，并映射为中文
+  const labelMap = {
+    BACKGROUND: '背景', OBJECTIVE: '目的', METHODS: '方法', RESULTS: '结果',
+    CONCLUSION: '结论', CONCLUSIONS: '结论', PURPOSE: '目的', AIM: '目的',
+    FINDINGS: '发现', INTERPRETATION: '解读', LIMITATIONS: '局限',
+  };
+  const labelRe = /^(BACKGROUND|OBJECTIVE|METHODS|RESULTS|CONCLUSION|CONCLUSIONS|PURPOSE|AIM|FINDINGS|INTERPRETATION|LIMITATIONS):\s*/i;
+  const blocks = abs.split(/\n\n+/);
+  const result = [];
+  blocks.forEach(b => {
+    const m = b.match(labelRe);
+    if (m) {
+      const en = m[1].toUpperCase();
+      result.push({ label: labelMap[en] || en, text: b.slice(m[0].length) });
+    } else if (result.length > 0) {
+      result[result.length-1].text += '\n\n' + b;
+    } else {
+      result.push({ label: '摘要', text: b });
+    }
+  });
+  return result;
+}
+
+function shouldRefreshResearch() {
+  const cache = STORE.get('research_cache', null);
+  if (!cache) return true;
+  const age = Date.now() - cache.updatedAt;
+  return age > 24 * 60 * 60 * 1000; // 超24h
+}
+
+async function refreshResearch() {
+  const btn = document.querySelector('.research-refresh-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '加载中…'; }
+  const list = $('research-list');
+  const hint = $('research-hint');
+  if (list) list.innerHTML = `<div class="research-loading">正在检索 PubMed</div>`;
+  if (hint) hint.style.display = 'none';
+  try {
+    const articles = await fetchPubMed(researchKw);
+    STORE.set('research_cache', { keyword: researchKw, articles, updatedAt: Date.now() });
+    renderResearch();
+    toast(`已更新 ${articles.length} 篇文献`);
+  } catch (e) {
+    if (list) list.innerHTML = `<div class="research-empty">检索失败：${e.message}<br>请检查网络后重试</div>`;
+    toast('检索失败');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '🔄 刷新'; }
+  }
+}
+
+function renderResearch(forceRefresh) {
+  const cache = STORE.get('research_cache', null);
+  const list = $('research-list');
+  const updated = $('research-updated');
+  const hint = $('research-hint');
+  if (!list) return;
+  // 关键词不匹配或无缓存
+  if (!cache || cache.keyword !== researchKw) {
+    if (forceRefresh) { refreshResearch(); return; }
+    list.innerHTML = `<div class="research-empty">点击「刷新」检索最新文献</div>`;
+    if (updated) updated.textContent = '';
+    return;
+  }
+  // 显示更新时间
+  const t = new Date(cache.updatedAt);
+  if (updated) updated.textContent = `更新于 ${t.getMonth()+1}月${t.getDate()}日 ${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+  // 超24h提示
+  if (hint) {
+    if (shouldRefreshResearch()) {
+      hint.style.display = 'block';
+      hint.className = 'research-hint';
+      hint.style.cssText = 'background:var(--m-teal-soft);padding:10px;border-radius:8px;font-size:13px;color:var(--color-text);margin-bottom:12px;';
+      hint.innerHTML = '💡 数据已过期，建议点击「刷新」获取最新文献';
+    } else { hint.style.display = 'none'; }
+  }
+  const arts = cache.articles || [];
+  if (arts.length === 0) {
+    list.innerHTML = `<div class="research-empty">暂无相关文献</div>`;
+    return;
+  }
+  list.innerHTML = arts.map(a => {
+    const sections = parseAbstractSections(a.abstract);
+    const absHtml = sections.map(s => `
+      <p><span class="abs-label">${s.label}</span>${escapeHtml(s.text)}</p>
+    `).join('');
+    return `
+      <div class="research-card">
+        <a class="research-card-title" href="${a.url}" target="_blank" rel="noopener">${escapeHtml(a.title)}</a>
+        <p class="research-card-meta">
+          <span class="journal">${escapeHtml(a.journal)}</span> · ${escapeHtml(a.pubdate)} · ${escapeHtml(a.authors)}
+        </p>
+        <div class="research-card-abstract">${absHtml}</div>
+      </div>`;
+  }).join('');
+}
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ============== 数据备份与迁移 ============== */
+function openBackupModal() { $('backup-overlay').style.display = 'flex'; }
+function closeBackupModal() { $('backup-overlay').style.display = 'none'; }
+
+function exportData() {
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k.startsWith('rp_')) data[k] = localStorage.getItem(k);
+  }
+  data.__exportedAt = new Date().toISOString();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `退休计划备份_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('已导出数据文件');
+  closeBackupModal();
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (!confirm('导入将覆盖现有数据，确定继续吗？建议先导出备份。')) {
+    event.target.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      Object.keys(data).forEach(k => {
+        if (k.startsWith('rp_')) localStorage.setItem(k, data[k]);
+      });
+      toast('导入成功，正在刷新…');
+      setTimeout(() => location.reload(), 1200);
+    } catch (err) {
+      toast('导入失败：文件格式错误');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
 }
 
 /* ============== 工作日程 ============== */
@@ -2497,11 +3009,13 @@ function checkReminders() {
 
 /* ============== 初始化 ============== */
 function init() {
+  renderNav();           // 渲染侧边栏 + 底部导航（动态）
   renderSchedule();
   renderBowel();
   renderFinance();
   renderWeight();
   renderAcademic();
+  renderResearch();
   // 体重默认日期为今天
   $('weight-date-input').value = todayStr();
   updateBellBadge();
